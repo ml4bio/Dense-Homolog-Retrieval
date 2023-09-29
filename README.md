@@ -43,7 +43,7 @@ optional arguments:
 
 
 
-## Server Mode Usage
+## Server Mode Usage (Advanced Usage)
 
 For the server administor, Django is required to deploy the server like this:
 
@@ -68,13 +68,13 @@ curl --location --request POST 'http://172.16.20.149:7077/fastmsa' \
 --data-urlencode 'tarnum=320000'
 ```
 
-## Server Test Mode
+## Server Test Mode (Advanced Usage)
 ```
 # Run a server instance hang on
 python manage.py runserver 0.0.0.0:7077
 ```
 
-## One-line Command
+## One-line Command (Advanced Usage)
 
 For fastMSA only, try the following one-line command:
 ```
