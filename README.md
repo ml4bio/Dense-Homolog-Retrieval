@@ -3,7 +3,7 @@
 ## Build Environment
 
 * Clone the repo `git clone https://github.com/heathcliff233/Dense-Homolog-Retrieval.git`
-* Go to the directory `cd Dense-Homolog_retrieval`
+* Go to the directory `cd Dense-Homolog-Retrieval`
 * Build using requirements.txt   `conda create --name fastMSA --file requirements.txt -c pytorch -c conda-forge -c bioconda`
 * Activate the environment `conda activate fastMSA`
 * Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
@@ -61,7 +61,7 @@ The number of max_workers is recommend is `32`.
 Send a request by http content: 
 ```
 # Use curl
-curl --location --request POST 'http://172.16.20.149:7077/fastmsa' \
+curl --location --request POST 'http://0.0.0.0:7077/fastmsa' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'input=/user/linmingzhi/project/fastmsa/example/1pazA.fasta' \
 --data-urlencode 'output=/user/linmingzhi/output/fastmsa/test026' \
@@ -74,7 +74,7 @@ curl --location --request POST 'http://172.16.20.149:7077/fastmsa' \
 python manage.py runserver 0.0.0.0:7077
 ```
 
-## One-line Command (Advanced Usage)
+## One-line Submission Command (Advanced Usage)
 
 For fastMSA only, try the following one-line command:
 ```
