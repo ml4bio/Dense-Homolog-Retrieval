@@ -14,7 +14,7 @@ class CustomWriter(BasePredictionWriter):
     def __init__(self, output_dir: str, write_interval: str):
         super().__init__(write_interval)
         self.output_dir = output_dir
-        world_size = 8
+        world_size = 1
         if torch.distributed.is_available() and torch.distributed.is_initialized():
             world_size = torch.distributed.get_world_size()
         for i in range(world_size):
@@ -26,7 +26,7 @@ class CustomWriter(BasePredictionWriter):
     ):
         if torch.distributed.is_available() and torch.distributed.is_initialized():
             rank = torch.distributed.get_rank()
-        torch.save(prediction, os.path.join(self.output_dir, str(rank), "%05d.pt"%batch_idx))
+        torch.save(prediction, os.path.join(self.output_dir, str(rank), "%07d.pt"%batch_idx))
 
     def write_on_epoch_end(
         self, trainer, pl_module: 'LightningModule', predictions: List[Any], batch_indices: List[Any]

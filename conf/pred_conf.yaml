@@ -1,7 +1,7 @@
 trainer:
   master_port: "39533"
-  devices: "0,1,2,3,4,5,6,7"
-  gpus: [0,1,2,3,4,5,6,7]
+  devices: "0"
+  gpus: [0]
   seed: 1234
   acc_step: 4
   accelerator: ddp
@@ -12,7 +12,7 @@ trainer:
 
 model:
   resume: True
-  ckpt_path: fastmsa/cpu_mudel/fastmsa-cpu.ckpt 
+  ckpt_path: ./cpu_mudel/fastmsa-cpu.ckpt 
 
 callback:
   monitor: val_acc

@@ -2,28 +2,29 @@
 
 ## Build Environment
 
-* build using requirements.txt   `conda create --name fastMSA --file requirements.txt -c pytorch -c conda-forge -c bioconda`
-* using /user/liyu/miniconda3/envs/rt directly (if accessible)
-
-note: this repo depends on modified phylopandas
+* Clone the repo `git clone https://github.com/heathcliff233/Dense-Homolog-Retrieval.git`
+* Go to the directory `cd Dense-Homolog_retrieval`
+* Build using requirements.txt   `conda create --name fastMSA --file requirements.txt -c pytorch -c conda-forge -c bioconda`
+* Activate the environment `conda activate fastMSA`
+* Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
 
 
 We have one model checkpoint located at `cpu_model/fastmsa-cpu.ckpt` (if there is none, please kindly download [here](https://drive.google.com/file/d/1fRqMwaiWnZ0msW_pp3ircaMIeIVxc4CX/view?usp=sharing))
 
 ## Offline Embedding (optional)
-
-* use `python3 pred.py` to do embedding
-* aggregate all the result, convert to `numpy.ndarray` and index by `faiss.IndexFlatIP`
-* convert raw dataset into DataFrame format according to the sequence order in step 2 and dump into pickle
+* Get the path to sequence database as $SEQDB_PATH (require fasta format) and path to output as $OUTPUT_PATH
+* Use `python3 do_embedding.py trainer.ur90_path=$SEQDB_PATH hydra.run.dir=$OUTPUT_PATH` to do embedding
+* Aggregate all the result using `python3 do_agg.py -s $SEQDB_PATH -e $OUTPUT_PATH/ebd -o $OUTPUT_PATH/agg`
 
 ##  Retrieval
 
-python retrieve.py
-usage: retrieve.py [-h] [-i INPUT_PATH] [-d DATABASE_PATH] [-o OUTPUT_PATH] [-n NUM] [-r ITERS]
+`python3 do_retrieval.py`
+usage: do_retrieval.py [-h] [-i INPUT_PATH] [-d DATABASE_PATH] [-o OUTPUT_PATH] [-n NUM] [-r ITERS]
 
 fastMSA do homolog retrieval.
 
 optional arguments:
+```
   -h, --help            show this help message and exit
   -i INPUT_PATH, --input_path INPUT_PATH
                         path of the fasta file containing query sequences
@@ -34,24 +35,20 @@ optional arguments:
   -n NUM, --num NUM     retrieve num
   -r ITERS, --iters ITERS
                         num of iters by QJackHMMER
+```
 
 * input_path: put all query seqs into one fasta file
 * output_path: output dir -- seq/db/res, seq subdir contain all queries, db contain retrieved db, res contain all results
 * database_path: directory containing database in DataFrame and embedding saved in faiss index. All results produced in Offline Embedding section.
 
 
-## Running example
-/share/wangsheng/miniconda/envs/fastMSA/bin/python retrieve.py -i example/1pazA.fasta -o 1pazA_out -d /share/liyu/hl/fastMSA/ebd/ur90-ebd
-
 
 ## Server Mode Usage
 
-For the server administor, start the server at first
-> Note: you don't have to follow this step,  unless the fastMsaApp server(172.16.20.151:7077) is down.
-Or Deploy like this:
+For the server administor, Django is required to deploy the server like this:
+
 ```
-cd /share/linmingzhi/server/fastmsa
-nohup /share/wangsheng/miniconda/envs/fastMSA/bin/python manage.py runserver 0.0.0.0:7077 >> nohup_xxx.out 2>&1 &
+nohup python3 manage.py runserver 0.0.0.0:7077 >> nohup_xxx.out 2>&1 &
 ```
 
 Manage the backend's max workers
@@ -82,9 +79,4 @@ python manage.py runserver 0.0.0.0:7077
 For fastMSA only, try the following one-line command:
 ```
 ./fastMSA.sh -i example/1pazA.fasta
-```
-
-For fastAF2 (fastMSA + standard AF2 with A3M as the input), try below one-line command:
-```
-./fastAF2.sh -i example/1pazA.fasta
 ```
