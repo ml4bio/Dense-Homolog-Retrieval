@@ -25,8 +25,8 @@ parser = argparse.ArgumentParser(description='fastMSA do homolog retrieval.')
 parser.add_argument("-i", "--input_path", default=input_path, help="path of the fasta file containing query sequences")
 parser.add_argument("-d", "--database_path", default="./output/agg/", help="path of dir containing database embedding and db converted to DataFrame")
 parser.add_argument("-o", "--output_path", default=out_path, help="path to output msas")
-parser.add_argument("-n", "--num", default=tar_num, help="retrieve num")
-parser.add_argument("-r", "--iters", default=iter_num, help="num of iters by QJackHMMER")
+parser.add_argument("-n", "--num", default=tar_num, type=int, help="retrieve num")
+parser.add_argument("-r", "--iters", default=iter_num, type=int, help="num of iters by QJackHMMER")
 
 
 def gen_query(fasta_file_path, out_dir):

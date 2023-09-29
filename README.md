@@ -9,11 +9,11 @@
 * Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
 
 
-We have one model checkpoint located at `cpu_model/fastmsa-cpu.ckpt` (if there is none, please kindly download [here](https://drive.google.com/file/d/1fRqMwaiWnZ0msW_pp3ircaMIeIVxc4CX/view?usp=sharing))
+We have one model checkpoint located at `cpu_model/fastmsa-cpu.ckpt` (if there is none, please kindly download [here](https://drive.google.com/file/d/1fRqMwaiWnZ0msW_pp3ircaMIeIVxc4CX/view?usp=sharing)). We will denote the absolute path to the checkpoint as `$MODEL_PATH`
 
 ## Offline Embedding (optional)
-* Get the path to sequence database as $SEQDB_PATH (require fasta format) and path to output as $OUTPUT_PATH
-* Use `python3 do_embedding.py trainer.ur90_path=$SEQDB_PATH hydra.run.dir=$OUTPUT_PATH` to do embedding
+* Get the path to sequence database as `$SEQDB_PATH` (require fasta format) and path to output as $OUTPUT_PATH
+* Use `python3 do_embedding.py trainer.ur90_path=$SEQDB_PATH model.ckpt_path=$MODEL_PATH hydra.run.dir=$OUTPUT_PATH` to do embedding. Please note that `$SEQDB_PATH` needs to be an absolute path. 
 * Aggregate all the result using `python3 do_agg.py -s $SEQDB_PATH -e $OUTPUT_PATH/ebd -o $OUTPUT_PATH/agg`
 
 ##  Retrieval

@@ -11,7 +11,7 @@ parser.add_argument("-e", "--embdb_path", default="./output/ebd/", help="path of
 parser.add_argument("-o", "--output_path", default="./output/agg/", help="path to output directory for aggregated embeddings")
 
 if __name__ == "__main__":
-    args = argparse.parse_args()
+    args = parser.parse_args()
     seqdb_path = args.seqdb_path
     embdb_path = args.embdb_path
     output_path = args.output_path

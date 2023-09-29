@@ -12,7 +12,7 @@ trainer:
 
 model:
   resume: True
-  ckpt_path: ./cpu_mudel/fastmsa-cpu.ckpt 
+  ckpt_path: ./cpu_model/fastmsa-cpu.ckpt 
 
 callback:
   monitor: val_acc
