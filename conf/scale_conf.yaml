@@ -1,0 +1,30 @@
+trainer:
+  master_port: "39533"
+  devices: "0"
+  gpus: [0]
+  seed: 1234
+  acc_step: 4
+  accelerator: "cuda"
+  strategy: ddp_find_unused_parameters_true
+  precision: 16
+  batch_size: 600 
+  max_epochs: 100
+  ur90_path: /mnt/data/aim/hongliang/uniref30_202103/uniref30_2103.tsv 
+
+model:
+  resume: False
+  ckpt_path: ./ckpt 
+
+callback:
+  monitor: val_acc
+  dirpath: ./model_uni/
+  filename: pl_biencoder-{epoch:03d}-{val_acc:.4f}
+  mode: max
+  save_top_k: 5
+  save_on_train_epoch_end: True
+
+logger:
+  log_every_n_steps: 10
+  use_wandb: False
+  project: uniclust_pl
+  log_model: False

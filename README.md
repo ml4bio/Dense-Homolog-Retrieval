@@ -41,42 +41,12 @@ optional arguments:
 * output_path: output dir -- seq/db/res, seq subdir contain all queries, db contain retrieved db, res contain all results
 * database_path: directory containing database in DataFrame and embedding saved in faiss index. All results produced in Offline Embedding section.
 
-
-
-## Server Mode Usage (Advanced Usage)
-
-For the server administor, Django is required to deploy the server like this:
-
+## Structure prediction (Optional)
+Install ColabFold
 ```
-nohup python3 manage.py runserver 0.0.0.0:7077 >> nohup_xxx.out 2>&1 &
+pip install -q --no-warn-conflicts 'colabfold[alphafold-minus-jax] @ git+https://github.com/sokrypton/ColabFold
 ```
-
-Manage the backend's max workers
-
-Find the max_worker config(FastMsaApp/fm_app.py: line 32), change the value.
-The number of max_workers is recommend is `32`.
-
-
-
-Send a request by http content: 
+Run batch prediction
 ```
-# Use curl
-curl --location --request POST 'http://0.0.0.0:7077/fastmsa' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data-urlencode 'input=/user/linmingzhi/project/fastmsa/example/1pazA.fasta' \
---data-urlencode 'output=/user/linmingzhi/output/fastmsa/test026' \
---data-urlencode 'tarnum=320000'
-```
-
-## Server Test Mode (Advanced Usage)
-```
-# Run a server instance hang on
-python manage.py runserver 0.0.0.0:7077
-```
-
-## One-line Submission Command (Advanced Usage)
-
-For fastMSA only, try the following one-line command:
-```
-./fastMSA.sh -i example/1pazA.fasta
+colabfold_batch $MSA_DIR $PREDICTION_RES
 ```
