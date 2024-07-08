@@ -50,3 +50,7 @@ Run batch prediction
 ```
 colabfold_batch $MSA_DIR $PREDICTION_RES
 ```
+## Publication
+If you find it useful, please cite us.
+
+Liang Hong, Zhihang Hu, Siqi Sun, Xiangru Tang, Jiuming Wang, Qingxiong Tan, Liangzhen Zheng, Sheng Wang, Sheng Xu, Irwin King, Mark Gerstein, and Yu Li. Fast, sensitive detection of protein homologs using deep dense retrieval. doi: https://doi.org/10.1101/2021.12.20.473431
