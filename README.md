@@ -9,7 +9,7 @@
 * Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
 
 
-We have one model checkpoint located at `cpu_model/fastmsa-cpu.ckpt` (if there is none, please kindly download [here](https://drive.google.com/file/d/1fRqMwaiWnZ0msW_pp3ircaMIeIVxc4CX/view?usp=sharing)). We will denote the absolute path to the checkpoint as `$MODEL_PATH`
+Please download the checkpoints [here](https://drive.google.com/file/d/1t7R_ZQJTIsFM0JVVuY9cLLa9EE2QlIVg/view?usp=sharing) and unzip. We will denote the absolute path to the checkpoint as `$MODEL_PATH`
 
 ## Offline Embedding (optional)
 * Get the path to sequence database as `$SEQDB_PATH` (require fasta format) and path to output as $OUTPUT_PATH
@@ -53,4 +53,4 @@ colabfold_batch $MSA_DIR $PREDICTION_RES
 ## Publication
 If you find it useful, please cite us.
 
-Liang Hong, Zhihang Hu, Siqi Sun, Xiangru Tang, Jiuming Wang, Qingxiong Tan, Liangzhen Zheng, Sheng Wang, Sheng Xu, Irwin King, Mark Gerstein, and Yu Li. Fast, sensitive detection of protein homologs using deep dense retrieval. doi: https://doi.org/10.1101/2021.12.20.473431
+Liang Hong, Zhihang Hu, Siqi Sun, Xiangru Tang, Jiuming Wang, Qingxiong Tan, Liangzhen Zheng, Sheng Wang, Sheng Xu, Irwin King, Mark Gerstein, and Yu Li. Fast, sensitive detection of protein homologs using deep dense retrieval. doi: https://doi.org/10.1038/s41587-024-02353-6
