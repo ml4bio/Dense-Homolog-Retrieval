@@ -51,6 +51,18 @@ Run batch prediction
 colabfold_batch $MSA_DIR $PREDICTION_RES
 ```
 ## Publication
-If you find it useful, please cite us.
+If you find it useful, please cite our paper.
 
-Liang Hong, Zhihang Hu, Siqi Sun, Xiangru Tang, Jiuming Wang, Qingxiong Tan, Liangzhen Zheng, Sheng Wang, Sheng Xu, Irwin King, Mark Gerstein, and Yu Li. Fast, sensitive detection of protein homologs using deep dense retrieval. doi: https://doi.org/10.1038/s41587-024-02353-6
+```bibtex
+@article{Hong2024Aug,
+	author = {Hong, Liang and Hu, Zhihang and Sun, Siqi and Tang, Xiangru and Wang, Jiuming and Tan, Qingxiong and Zheng, Liangzhen and Wang, Sheng and Xu, Sheng and King, Irwin and Gerstein, Mark and Li, Yu},
+	title = {{Fast, sensitive detection of protein homologs using deep dense retrieval}},
+	journal = {Nat. Biotechnol.},
+	pages = {1--13},
+	year = {2024},
+	month = aug,
+	issn = {1546-1696},
+	publisher = {Nature Publishing Group},
+	doi = {10.1038/s41587-024-02353-6}
+}
+```
