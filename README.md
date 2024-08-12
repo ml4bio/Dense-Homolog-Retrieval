@@ -4,12 +4,14 @@
 
 * Clone the repo `git clone https://github.com/heathcliff233/Dense-Homolog-Retrieval.git`
 * Go to the directory `cd Dense-Homolog-Retrieval`
-* Build using requirements.txt   `conda create --name fastMSA --file requirements.txt -c pytorch -c conda-forge -c bioconda`
+* Build using environment.yml   `conda create --name fastMSA --file environment.yml -c pytorch -c conda-forge -c bioconda`
 * Activate the environment `conda activate fastMSA`
 * Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
 
 
 Please download the checkpoints [here](https://drive.google.com/file/d/1t7R_ZQJTIsFM0JVVuY9cLLa9EE2QlIVg/view?usp=sharing) and unzip. We will denote the absolute path to the checkpoint as `$MODEL_PATH`
+
+If you would like a quick test with pre-built index or want to use esm1, please switch to v1 branch.
 
 ## Offline Embedding (optional)
 * Get the path to sequence database as `$SEQDB_PATH` (require fasta format) and path to output as $OUTPUT_PATH
