@@ -4,15 +4,15 @@ trainer:
   gpus: [0]
   seed: 1234
   acc_step: 4
-  accelerator: ddp
+  accelerator: gpu
   precision: 32
   batch_size: 600 
   max_epochs: 100
-  ur90_path: /share/hongliang/ur90_201803.pkl 
+  ur90_path: /data/hongliang/Dense-Homolog-Retrieval/df-ebd.tsv
 
 model:
   resume: True
-  ckpt_path: ./cpu_model/fastmsa-cpu.ckpt 
+  ckpt_path: /data/hongliang/Dense-Homolog-Retrieval/cpu_model
 
 callback:
   monitor: val_acc

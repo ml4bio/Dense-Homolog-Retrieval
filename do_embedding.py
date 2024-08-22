@@ -11,10 +11,9 @@ from typing import *
 
 class CustomWriter(BasePredictionWriter):
 
-    def __init__(self, output_dir: str, write_interval: str):
+    def __init__(self, output_dir: str, write_interval: str, world_size: int):
         super().__init__(write_interval)
         self.output_dir = output_dir
-        world_size = 1
         if torch.distributed.is_available() and torch.distributed.is_initialized():
             world_size = torch.distributed.get_world_size()
         for i in range(world_size):
@@ -31,10 +30,10 @@ class CustomWriter(BasePredictionWriter):
     def write_on_epoch_end(
         self, trainer, pl_module: 'LightningModule', predictions: List[Any], batch_indices: List[Any]
     ):
-        torch.save(predictions, os.path.join(self.output_dir, "predictions.pt"))
+        torch.save(predictions, os.path.join(self.output_dir, str(trainer.global_rank), "predictions.pt"))
 
 def configure_callbacks(cfg: DictConfig):
-    return CustomWriter(output_dir='ebd', write_interval='batch')
+    return CustomWriter(output_dir='ebd', write_interval='epoch', world_size=len(cfg.trainer.gpus))
 
 
 @hydra.main(config_path="conf", config_name="pred_conf")
@@ -51,28 +50,22 @@ def main(cfg: DictConfig):
 
     pl.seed_everything(cfg.trainer.seed)
 
-    if cfg.model.resume:
-        model = MyEncoder.load_from_checkpoint(
-        checkpoint_path=cfg.model.ckpt_path,
-        )
-    else:
-        model = MyEncoder()
-
-    dm  = PdDataModule(cfg.trainer.ur90_path, cfg.trainer.batch_size, model.alphabet)
+    print(os.path.abspath(cfg.model.ckpt_path))
+    model = MyEncoder(bert_path=[os.path.join(cfg.model.ckpt_path, 'dhr_qencoder.pt'), os.path.join(cfg.model.ckpt_path, 'dhr_cencoder.pt')]) 
 
     trainer = pl.Trainer(
-        gpus=cfg.trainer.gpus,
-        #accelerator=cfg.trainer.accelerator,
-        strategy=cfg.trainer.accelerator,
+        devices=cfg.trainer.gpus,
+        accelerator=cfg.trainer.accelerator,
+        # strategy=cfg.trainer.strategy,
         accumulate_grad_batches=cfg.trainer.acc_step,
         precision=cfg.trainer.precision,
+        # use_distributed_sampler=False,
         #gradient_clip_val=0.5,
         logger=logger,
-        log_every_n_steps=cfg.logger.log_every_n_steps,
-        max_epochs=cfg.trainer.max_epochs,
         callbacks=configure_callbacks(cfg),
         fast_dev_run=False,
     )
+    dm  = PdDataModule(cfg.trainer.ur90_path, cfg.trainer.batch_size, model.alphabet, trainer)
 
     trainer.predict(model, datamodule=dm)
 

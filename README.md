@@ -1,5 +1,9 @@
 # Dense Homolog Retriever (DHR)
 
+## Changelog
+### 2024-08-22
+- Update dependencies in main branch and fix version issue in do_embedding.
+
 ## Build Environment
 
 * Clone the repo `git clone https://github.com/heathcliff233/Dense-Homolog-Retrieval.git`
@@ -14,9 +18,10 @@ Please download the checkpoints [here](https://drive.google.com/file/d/1t7R_ZQJT
 If you would like a quick test with pre-built index or want to use esm1, please switch to v1 branch.
 
 ## Offline Embedding (optional)
-* Get the path to sequence database as `$SEQDB_PATH` (require fasta format) and path to output as $OUTPUT_PATH
+* Get the path to sequence database as `$SEQDB_PATH` (require tsv format) and path to output as $OUTPUT_PATH
 * Use `python3 do_embedding.py trainer.ur90_path=$SEQDB_PATH model.ckpt_path=$MODEL_PATH hydra.run.dir=$OUTPUT_PATH` to do embedding. Please note that `$SEQDB_PATH` needs to be an absolute path. 
 * Aggregate all the result using `python3 do_agg.py -s $SEQDB_PATH -e $OUTPUT_PATH/ebd -o $OUTPUT_PATH/agg`
+* For power users, please modify the settings in configuration to allow parallel embedding.
 
 ##  Retrieval
 

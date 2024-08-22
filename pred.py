@@ -4,7 +4,7 @@ from omegaconf import DictConfig
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
 from mydpr.model.biencoder import MyEncoder
-from mydpr.dataset.cath35 import PdDataModule, DistributedProxySampler
+from mydpr.dataset.cath35 import PdDataModule
 import torch
 from pytorch_lightning.callbacks import BasePredictionWriter
 from typing import *
