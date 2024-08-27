@@ -7,7 +7,7 @@ import argparse
 import faiss
 
 parser = argparse.ArgumentParser(description='fastMSA aggregate embedding.')
-parser.add_argument("-s", "--seqdb_path", default="./input_test.fasta", help="path of the fasta sequence database")
+parser.add_argument("-s", "--seqdb_path", default="./input_test.tsv", help="path of the tsv sequence database")
 parser.add_argument("-e", "--embdb_path", default="./output/ebd/", help="path of the corresponding embedding output")
 parser.add_argument("-o", "--output_path", default="./output/agg/", help="path to output directory for aggregated embeddings")
 

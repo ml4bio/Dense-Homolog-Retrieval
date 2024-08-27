@@ -1,8 +1,14 @@
 # Dense Homolog Retriever (DHR)
 
 ## Changelog
+### 2024-08-27
+- Remove PhyloPandas dependency
 ### 2024-08-22
 - Update dependencies in main branch and fix version issue in do_embedding.
+
+## Note
+* If you would like to try homolog retrieval benchmarks, please switch to v1 branch. v2 is built for large scale searches.
+* Due to numerous reports on PhyloPandas issue (for quick fasta IO), it has currently been removed and currently only tsv file format is supported in main branch.
 
 ## Build Environment
 
@@ -10,7 +16,7 @@
 * Go to the directory `cd Dense-Homolog-Retrieval`
 * Build using environment.yml   `conda create --name fastMSA --file environment.yml -c pytorch -c conda-forge -c bioconda`
 * Activate the environment `conda activate fastMSA`
-* Get the customized Phylopandas for fasta processing `git clone https://github.com/heathcliff233/phylopandas.git`
+
 
 
 Please download the checkpoints [here](https://drive.google.com/file/d/1t7R_ZQJTIsFM0JVVuY9cLLa9EE2QlIVg/view?usp=sharing) and unzip. We will denote the absolute path to the checkpoint as `$MODEL_PATH`
@@ -18,7 +24,7 @@ Please download the checkpoints [here](https://drive.google.com/file/d/1t7R_ZQJT
 If you would like a quick test with pre-built index or want to use esm1, please switch to v1 branch.
 
 ## Offline Embedding (optional)
-* Get the path to sequence database as `$SEQDB_PATH` (require tsv format) and path to output as $OUTPUT_PATH
+* Get the path to sequence database as `$SEQDB_PATH` (require tsv format) and path to output as $OUTPUT_PATH (The sequence database should be in tsv format)
 * Use `python3 do_embedding.py trainer.ur90_path=$SEQDB_PATH model.ckpt_path=$MODEL_PATH hydra.run.dir=$OUTPUT_PATH` to do embedding. Please note that `$SEQDB_PATH` needs to be an absolute path. 
 * Aggregate all the result using `python3 do_agg.py -s $SEQDB_PATH -e $OUTPUT_PATH/ebd -o $OUTPUT_PATH/agg`
 * For power users, please modify the settings in configuration to allow parallel embedding.
@@ -34,7 +40,7 @@ optional arguments:
 ```
   -h, --help            show this help message and exit
   -i INPUT_PATH, --input_path INPUT_PATH
-                        path of the fasta file containing query sequences
+                        path of the tsv file containing query sequences
   -d DATABASE_PATH, --database_path DATABASE_PATH
                         path of dir containing database embedding and db converted to DataFrame
   -o OUTPUT_PATH, --output_path OUTPUT_PATH
@@ -44,7 +50,7 @@ optional arguments:
                         num of iters by QJackHMMER
 ```
 
-* input_path: put all query seqs into one fasta file
+* input_path: put all query seqs into one tsv file
 * output_path: output dir -- seq/db/res, seq subdir contain all queries, db contain retrieved db, res contain all results
 * database_path: directory containing database in DataFrame and embedding saved in faiss index. All results produced in Offline Embedding section.
 
