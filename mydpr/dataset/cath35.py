@@ -82,7 +82,7 @@ class ArrowDataset(Dataset):
         return self.id[index].as_py(), self.seq[index].as_py()
 
 class PdDataModule(pl.LightningDataModule):
-    def __init__(self, data_path, batch_size, alphabet, trainer):
+    def __init__(self, data_path, batch_size, alphabet, trainer=None):
         super().__init__()
         self.path = data_path
         self.batch_size = batch_size
@@ -96,7 +96,7 @@ class PdDataModule(pl.LightningDataModule):
 
     def predict_dataloader(self):
         sampler = DistributedProxySampler(self.pd_set, self.world_size, self.rank)
-        return DataLoader(dataset=self.pd_set, collate_fn=self.batch_converter, sampler=sampler, num_workers=8, batch_size=self.batch_size) 
+        return DataLoader(dataset=self.pd_set, collate_fn=self.batch_converter, sampler=sampler, num_workers=8, batch_size=self.batch_size, shuffle=False) 
 
 
 def get_filename(sel_path: str) -> List[str]:

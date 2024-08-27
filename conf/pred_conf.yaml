@@ -6,9 +6,9 @@ trainer:
   acc_step: 4
   accelerator: gpu
   precision: 32
-  batch_size: 600 
+  batch_size: 200 
   max_epochs: 100
-  ur90_path: /data/hongliang/Dense-Homolog-Retrieval/df-ebd.tsv
+  ur90_path: /data/hongliang/Dense-Homolog-Retrieval/example/df-ebd.tsv
 
 model:
   resume: True

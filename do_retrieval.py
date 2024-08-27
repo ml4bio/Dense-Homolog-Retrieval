@@ -1,19 +1,20 @@
 import torch
 import pytorch_lightning as pl
 from mydpr.model.biencoder import MyEncoder
-from mydpr.dataset.cath35 import PdDataModule
+from mydpr.dataset.cath35 import PdDataModule, ArrowDataset
+from torch.utils.data import DataLoader
 import sys
 import os
 import argparse
 import faiss
 import time
 import math
-sys.path.append("/share/hongliang") 
+# sys.path.append("/share/hongliang") 
 import pandas as pd
 import numpy as np
-import phylopandas.phylopandas as ph
+# import phylopandas.phylopandas as ph
 
-ckpt_path = "./cpu_model/fastmsa-cpu.ckpt"   #-> modified by Sheng Wang at 2022.06.14
+ckpt_path = "/data/hongliang/Dense-Homolog-Retrieval/cpu_model"
 input_path = "./input_test.fasta"
 qjackhmmer = "./bin/qjackhmmer"
 out_path = "./testout/"
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     s0 = time.time()
 
     # print("Start mkdir!!!")
-    gen_query(input_path, out_path)
+    # gen_query(input_path, out_path)
     s1 = time.time()
     # print("Mkdir output cost: %f s"%(s1-s0))
 
@@ -66,35 +67,27 @@ if __name__ == "__main__":
     # print("Load index cost: %f s"%(s2-s1))
     df = pd.read_pickle(dm_path)
 
-    model = MyEncoder.load_from_checkpoint(checkpoint_path=ckpt_path)
-    ds = PdDataModule(input_path, 40, model.alphabet)
+    model = MyEncoder(bert_path=[os.path.join(ckpt_path, 'dhr_qencoder.pt'), os.path.join(ckpt_path, 'dhr_cencoder.pt')]).eval() 
+    ds = ArrowDataset(input_path)
+    names = ds.id.to_pylist()
+    bc = model.alphabet.get_batch_converter()
     
     s3 = time.time()
     # print("Load ckp cost: %f s"%(s3-s2))
-    trainer = pl.Trainer() # gpus=[0])
-    ret = trainer.predict(model, datamodule=ds, return_predictions=True)
-    trainer.save_checkpoint(ckpt_path)
-    s4 = time.time()
+    # trainer = pl.Trainer() # gpus=[0])
+    # ret = trainer.predict(model, datamodule=ds, return_predictions=True)
+    # s4 = time.time()
     # print("Train predict cost: %f s"%(s4-s3))
     # names, qebd = ret[0]
+    ebd = []
+    dataloader = DataLoader(ds, batch_size=search_batch, collate_fn=bc, shuffle=False)
+    for i, et in enumerate(dataloader):
+        a,b,c = et
+        with torch.no_grad():
+            ebd.append(model.forward_left(c))
+    ebd = torch.cat(ebd, dim=0)
+    encoded = ebd.numpy()
     
-    tmp1 = []
-    tmp2 = []
-    for i in ret:
-        n1, q1 = i
-        tmp1 += n1
-        q1 = torch.tensor(q1).numpy()
-        tmp2.append(q1)
-    encoded = np.concatenate(tmp2, axis=0)
-    # encoded = np.concatenate([t.cpu().numpy() for t in tmp2]) 
-    names = tmp1
-    # print(encoded.shape)
-    
-    # encoded = qebd.numpy()
-    # print("prepared model")
-    s5 = time.time()
-    # print("Encode model cost: %f s"%(s5-s4))
-
     os.makedirs(os.path.join(out_path, "db"), exist_ok=True)
     for i in range(math.ceil(encoded.shape[0]/search_batch)):
         scores, idxes = index.search(encoded[i*search_batch:(i+1)*search_batch], tar_num)
@@ -102,7 +95,7 @@ if __name__ == "__main__":
         for j in range(idx_batch):
             tar_idx = idxes[j]
             res = df.iloc[tar_idx]
-            res.phylo.to_fasta_dev(os.path.join(out_path, "db", names[i*search_batch+j]+'.fasta'))
+            res[['id', 'sequence']].to_csv(os.path.join(out_path, "db", names[i*search_batch+j]+'.tsv'), sep='\t', index=False, header=False)
             
     #end = time.time()
     #print("Time for predict %d : %f s"%(tar_num, end-s5))
