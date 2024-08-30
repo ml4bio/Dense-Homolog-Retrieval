@@ -21,7 +21,7 @@ if __name__ == "__main__":
     seqdb_df = seqdb_df.set_index('id')
 
     # Create Index
-    index = faiss.IndexFlatL2(768)
+    index = faiss.IndexFlatIP(768)
     id_lst = []
 
     # Load embedded database and process

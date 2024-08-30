@@ -1,2 +1,5 @@
-
+outputs/
 *.ckpt
+__pycache__/
+*.pyc
+cpu_model/

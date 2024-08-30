@@ -1,4 +1,7 @@
 # Dense Homolog Retriever (DHR)
+## Update log
+### 2024-08-30
+* Fix a bug in index type. If you created an index before this commit, please run do_agg.py again. We apologize for the inconvenience.
 
 ## Build Environment
 
