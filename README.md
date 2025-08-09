@@ -14,7 +14,7 @@
 
 * Clone the repo `git clone https://github.com/heathcliff233/Dense-Homolog-Retrieval.git`
 * Go to the directory `cd Dense-Homolog-Retrieval`
-* Build using environment.yml   `conda create --name fastMSA --file environment.yml -c pytorch -c conda-forge -c bioconda`
+* Build using environment.yml   `conda env create -f environment.yml`
 * Activate the environment `conda activate fastMSA`
 
 
